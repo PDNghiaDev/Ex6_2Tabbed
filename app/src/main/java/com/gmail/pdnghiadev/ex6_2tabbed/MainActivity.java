@@ -17,5 +17,12 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_android_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_movie_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_picture_24dp);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_food_24dp);
+        tabLayout.getTabAt(4).setIcon(R.drawable.ic_music_24dp);
+        tabLayout.getTabAt(5).setIcon(R.drawable.ic_comic_24dp);
     }
 }

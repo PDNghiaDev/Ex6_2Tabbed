@@ -132,6 +132,7 @@ public class PageFragment extends Fragment {
             mRelativeLayout.setVisibility(View.VISIBLE);
         }
 
+
         return view;
     }
 
@@ -143,7 +144,6 @@ public class PageFragment extends Fragment {
             mAdapter = new RedditAdapter(mListChildren, getResources().getColor(R.color.colorStickyPost), getResources().getColor(R.color.colorTitle));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.clearAdapter();
-
         } else { //LoadMore
             counter = counter + 25;
             subreddit = SUBREDDIT_URL + subreddit + JSON_END + COUNT + counter + AFTER + afterId;
@@ -236,7 +236,7 @@ public class PageFragment extends Fragment {
 
                 if (loading && (visibleItemCount + fistVisibleItem) == totalItemCount) { // LoadMore
 
-                    if (totalItemCount % 25 == 0){ // Check for condition to show LoadMore
+                    if (totalItemCount % 25 == 0) { // Check for condition to show LoadMore
                         loading = false;
 //                    mBottomLayout.setVisibility(View.VISIBLE);
                         mListChildren.add(null);
