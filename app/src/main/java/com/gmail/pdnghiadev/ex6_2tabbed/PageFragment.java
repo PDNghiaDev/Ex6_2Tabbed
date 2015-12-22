@@ -19,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -126,7 +124,14 @@ public class PageFragment extends Fragment {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         mNetworkInfo = connMgr.getActiveNetworkInfo();
         if (mNetworkInfo != null && mNetworkInfo.isConnected()) {// Connected
-            load(null);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    load(null);
+                }
+            });
+
         } else {//Not connect
             mRecyclerView.setVisibility(View.INVISIBLE);
             mRelativeLayout.setVisibility(View.VISIBLE);
@@ -136,7 +141,10 @@ public class PageFragment extends Fragment {
         return view;
     }
 
+    // TODO: load data from Server and parse JSON data
     public void load(String after) {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         String subreddit = topic[mPage];
 
         if (after == null) { //LoadData
@@ -156,18 +164,18 @@ public class PageFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 mListChildren.remove(null);
-                mSwipeRefreshLayout.setRefreshing(false);
                 RedditPost redditPost = mGson.fromJson(response.toString(), RedditPost.class);
                 afterId = redditPost.getAfter();
                 Collections.addAll(mListChildren, redditPost.getChildrens());
                 mAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false); // Not refresh
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("TAG", "Error" + error.getMessage());
-                mSwipeRefreshLayout.setRefreshing(false);
                 handleVolleyError(error);
+                mSwipeRefreshLayout.setRefreshing(false); // Not refresh
             }
         });
 
@@ -175,6 +183,7 @@ public class PageFragment extends Fragment {
 
     }
 
+    // TODO: Handle error
     private void handleVolleyError(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) { // Not connection wifi
             Log.d(TAG, "TimeoutError || NoConnectionError: " + error.getMessage());
@@ -191,6 +200,7 @@ public class PageFragment extends Fragment {
         }
     }
 
+    // TODO: Scroll content and show loadingMore
     public void scroll(final LinearLayoutManager manager) {
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -261,11 +271,6 @@ public class PageFragment extends Fragment {
         mRelativeLayout = (RelativeLayout) view.findViewById(R.id.layout_not_connect);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
 //        mBottomLayout = (RelativeLayout) view.findViewById(R.id.loadMoreItem);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override
