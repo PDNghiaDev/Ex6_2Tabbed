@@ -143,8 +143,6 @@ public class PageFragment extends Fragment {
 
     // TODO: load data from Server and parse JSON data
     public void load(String after) {
-        mSwipeRefreshLayout.setRefreshing(true);
-
         String subreddit = topic[mPage];
 
         if (after == null) { //LoadData
