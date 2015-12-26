@@ -24,7 +24,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="5"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@color/colorComment"/>
 
         <TextView
             android:id="@+id/txt_author"
@@ -81,7 +82,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:text="124"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textColor="@color/colorComment"/>
 
 
     </RelativeLayout>
